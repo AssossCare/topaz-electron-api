@@ -15,7 +15,7 @@ export class ElectronApi {
     }
 
     checkAvailable(){
-        fetch(`${this.host}/ok`, {
+        return fetch(`${this.host}/ok`, {
             method: "GET",
             headers: this.headers
         })
