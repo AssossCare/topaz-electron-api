@@ -4,7 +4,8 @@ export class ElectronApi {
     constructor(host) {
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
-        return Promise.resolve(this.checkAvailable());
+        this.available=false
+        this.checkAvailable();
     }
 
     handleError(e) {
@@ -16,7 +17,7 @@ export class ElectronApi {
 
     hostChanged(host){
         this.host = host;
-        Promise.resolve(this.checkAvailable());
+        this.checkAvailable();
     }
 
     checkAvailable(){
