@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WatheletJulien/topaz-electron-api.git"
+    "url": "git+https://github.com/AssossCare/topaz-electron-api"
   },
   "keywords": [],
   "author": "Julien Wathelet",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/WatheletJulien/topaz-electron-api/issues"
+    "url": "https://github.com/AssossCare/topaz-electron-api/issues"
   },
-  "homepage": "https://github.com/WatheletJulien/topaz-electron-api#readme"
+  "homepage": "https://github.com/AssossCare/topaz-electron-api#readme"
 }
