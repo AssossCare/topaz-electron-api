@@ -1,0 +1,21 @@
+{
+  "name": "topaz-electron-api",
+  "version": "1.0.0",
+  "description": "api for topaz electron",
+  "main": "src/index.js",
+  "scripts": {
+    "demo": "",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WatheletJulien/topaz-electron-api.git"
+  },
+  "keywords": [],
+  "author": "Julien Wathelet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WatheletJulien/topaz-electron-api/issues"
+  },
+  "homepage": "https://github.com/WatheletJulien/topaz-electron-api#readme"
+}
