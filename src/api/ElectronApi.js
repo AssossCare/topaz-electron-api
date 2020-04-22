@@ -221,4 +221,15 @@ export class ElectronApi {
             .catch(e => this.handleError(e))
     }
 
+    openWebPage(url){
+        if(!this.isAvailable())return false;
+        return fetch(`${this.host}/openWebPage`, {
+            method: "POST",
+            headers: this.headers,
+            body: {url : url}
+        })
+            .then(response => response.json())
+            .catch(e => this.handleError(e))
+    }
+
 }
