@@ -4,6 +4,7 @@ export class ElectronApi {
     constructor(host) {
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
+        this.available=false
         this.checkAvailable();
     }
 
@@ -12,6 +13,11 @@ export class ElectronApi {
             throw Error("auth-failed");
         else
             throw Error("api-error" + e.status);
+    }
+
+    hostChanged(host){
+        this.host = host;
+        this.checkAvailable();
     }
 
     checkAvailable(){
@@ -227,6 +233,29 @@ export class ElectronApi {
             method: "POST",
             headers: this.headers,
             body: {url : url}
+        })
+            .then(response => response.json())
+            .catch(e => this.handleError(e))
+    }
+
+    getConfigFile(){
+        if(!this.isAvailable())return false;
+        return fetch(`${this.host}/getConfigFile`, {
+            method: "GET",
+            headers: this.headers
+        })
+            .then(response => response.json())
+            .catch(e => this.handleError(e))
+    }
+
+    setConfigFile(data){
+        if(!this.isAvailable())return false;
+        return fetch(`${this.host}/setConfigFile`, {
+            method: "POST",
+            headers: this.headers,
+            body : JSON.stringify({
+                data : data
+            })
         })
             .then(response => response.json())
             .catch(e => this.handleError(e))
