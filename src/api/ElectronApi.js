@@ -96,7 +96,7 @@ export class ElectronApi {
         return fetch(`${this.host}/replicate`, {
             method: "POST",
             headers: this.headers,
-            body : JSON.stringify( { cloudKey: cloudKey } )
+            body : JSON.stringify( { cloudKey: cloudKey, cluster : cluster } )
         })
             .then(response => response.json())
             .catch(e => this.handleError(e))
