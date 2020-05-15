@@ -1,25 +1,20 @@
-
 export class ElectronApi {
-
     constructor(host) {
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
         this.available=false
         this.checkAvailable();
     }
-
     handleError(e) {
         if (e.status == 401)
             throw Error("auth-failed");
         else
             throw Error("api-error" + e.status);
     }
-
     hostChanged(host){
         this.host = host;
         this.checkAvailable();
     }
-
     checkAvailable(){
         return fetch(`${this.host}/ok`, {
             method: "GET",
@@ -34,11 +29,9 @@ export class ElectronApi {
                 return false
             })
     }
-
     isAvailable(){
         return this.available;
     }
-
     setMikronoCredentials(mikronoUser,mikronoPassword){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/mc`, {
@@ -49,7 +42,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     print(body,printerName){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/print/${printerName}`, {
@@ -59,7 +51,6 @@ export class ElectronApi {
         })
             .catch(e => this.handleError(e))
     }
-
     printers(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/printers`, {
@@ -69,7 +60,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     read(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/read`, {
@@ -79,7 +69,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     createFirstUser(healthcareParty,user){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/create-first-user`, {
@@ -90,18 +79,16 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     replication(cloudKey){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/replicate`, {
             method: "POST",
             headers: this.headers,
-            body : JSON.stringify( { cloudKey: cloudKey } )
+            body : JSON.stringify( { cloudKey: cloudKey, cluster : cluster } )
         })
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     checkDrugs(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/checkDrugs`, {
@@ -111,7 +98,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     getPatient(patientId){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/getPatient`, {
@@ -124,7 +110,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     topazCredential(user,credentials){
         if(!this.isAvailable() || !user || !user.applicationTokens || !user.id || !credentials)return false;
         return fetch(`${this.host}/tc`, {
@@ -139,7 +124,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     tokenFHC(isMH,tokenId,token,keystoreIdMH,nihiiMH){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/tokenFHC`, {
@@ -152,7 +136,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     getVersion(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/getVersion`, {
@@ -162,7 +145,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     getPrinterSetting(userId){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/getPrinterSetting`, {
@@ -175,7 +157,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     setPrinterSetting(userId,printerSettingComplete){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/setPrinterSetting`, {
@@ -189,7 +170,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     scanning(requestType,selectedScanner,scannerIndex,scannerColor,scannerDuplex){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/scanning`, {
@@ -206,7 +186,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     getConnexionData(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/getConnexionData`, {
@@ -216,7 +195,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     logout(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/logout`, {
@@ -226,7 +204,16 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
+    openWebPage(url){
+        if(!this.isAvailable())return false;
+        return fetch(`${this.host}/openWebPage`, {
+            method: "POST",
+            headers: this.headers,
+            body: {url : url}
+        })
+            .then(response => response.json())
+            .catch(e => this.handleError(e))
+    }
     getConfigFile(){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/getConfigFile`, {
@@ -236,7 +223,6 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
     setConfigFile(data){
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/setConfigFile`, {
@@ -249,5 +235,4 @@ export class ElectronApi {
             .then(response => response.json())
             .catch(e => this.handleError(e))
     }
-
 }
