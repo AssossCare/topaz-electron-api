@@ -54,7 +54,7 @@ export class ElectronApi {
         if(!this.isAvailable())return false;
         return fetch(`${this.host}/print/${printerName}`, {
             method: "POST",
-            headers: this.headers,
+            headers: {"Content-Type": "text/html; charset=utf-8"},
             body: body
         })
             .catch(e => this.handleError(e))
