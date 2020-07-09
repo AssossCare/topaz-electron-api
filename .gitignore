@@ -1,2 +1,3 @@
 .idea/
 topaz-electron-api.iml
+node_modules/

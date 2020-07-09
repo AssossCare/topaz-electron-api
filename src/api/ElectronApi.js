@@ -1,6 +1,10 @@
 
 export class ElectronApi {
 
+    WebSocket = require('ws');
+    electronWS = null
+    callBackFunctions = {}
+
     constructor(host) {
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
@@ -40,7 +44,7 @@ export class ElectronApi {
     }
 
     setMikronoCredentials(mikronoUser,mikronoPassword){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/mc`, {
             method: "POST",
             headers: this.headers,
@@ -51,7 +55,7 @@ export class ElectronApi {
     }
 
     print(body,printerName){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/print/${printerName}`, {
             method: "POST",
             headers: {"Content-Type": "text/html; charset=utf-8"},
@@ -61,7 +65,7 @@ export class ElectronApi {
     }
 
     printers(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/printers`, {
             method: "GET",
             headers: this.headers
@@ -71,7 +75,7 @@ export class ElectronApi {
     }
 
     read(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/read`, {
             method: "GET",
             headers: this.headers
@@ -81,7 +85,7 @@ export class ElectronApi {
     }
 
     createFirstUser(healthcareParty,user){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/create-first-user`, {
             method: "POST",
             headers: this.headers,
@@ -92,7 +96,7 @@ export class ElectronApi {
     }
 
     replication(cloudKey){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/replicate`, {
             method: "POST",
             headers: this.headers,
@@ -103,7 +107,7 @@ export class ElectronApi {
     }
 
     checkDrugs(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/checkDrugs`, {
             method: "GET",
             headers: this.headers
@@ -113,7 +117,7 @@ export class ElectronApi {
     }
 
     getPatient(patientId){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/getPatient`, {
             method: "POST",
             headers: this.headers,
@@ -126,7 +130,7 @@ export class ElectronApi {
     }
 
     topazCredential(user,credentials){
-        if(!this.isAvailable() || !user || !user.applicationTokens || !user.id || !credentials)return false;
+        if(!this.isAvailable() || !user || !user.applicationTokens || !user.id || !credentials)return Promise.resolve(false);
         return fetch(`${this.host}/tc`, {
             method: "POST",
             headers: this.headers,
@@ -141,7 +145,7 @@ export class ElectronApi {
     }
 
     tokenFHC(isMH,tokenId,token,keystoreIdMH,nihiiMH){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/tokenFHC`, {
             method: "POST",
             headers: this.headers,
@@ -154,7 +158,7 @@ export class ElectronApi {
     }
 
     getVersion(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/getVersion`, {
             method: "GET",
             headers: this.headers
@@ -164,7 +168,7 @@ export class ElectronApi {
     }
 
     getPrinterSetting(userId){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/getPrinterSetting`, {
             method: "POST",
             headers: this.headers,
@@ -177,7 +181,7 @@ export class ElectronApi {
     }
 
     setPrinterSetting(userId,printerSettingComplete){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/setPrinterSetting`, {
             method: "POST",
             headers: this.headers,
@@ -191,7 +195,7 @@ export class ElectronApi {
     }
 
     scanning(requestType,selectedScanner,scannerIndex,scannerColor,scannerDuplex){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/scanning`, {
             method: "POST",
             headers: this.headers,
@@ -208,7 +212,7 @@ export class ElectronApi {
     }
 
     getConnexionData(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/getConnexionData`, {
             method: "GET",
             headers: this.headers
@@ -218,7 +222,7 @@ export class ElectronApi {
     }
 
     logout(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/logout`, {
             method: "GET",
             headers: this.headers
@@ -228,7 +232,7 @@ export class ElectronApi {
     }
 
     openWebPage(url){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/openWebPage`, {
             method: "POST",
             headers: this.headers,
@@ -239,7 +243,7 @@ export class ElectronApi {
     }
 
     getConfigFile(){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/getConfigFile`, {
             method: "GET",
             headers: this.headers
@@ -249,7 +253,7 @@ export class ElectronApi {
     }
 
     setConfigFile(data){
-        if(!this.isAvailable())return false;
+        if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/setConfigFile`, {
             method: "POST",
             headers: this.headers,
@@ -259,6 +263,44 @@ export class ElectronApi {
         })
             .then(response => response.json())
             .catch(e => this.handleError(e))
+    }
+
+    //websocket for read auto eid
+    launchWS(callBackFunctions){
+        callBackFunctions.map(fct => {
+            this.setCallBack(fct.method,fct.fct)
+        })
+        const electronWS = new WebSocket(`${this.host.replace(/^http/, "ws")}/topazApi`)
+
+        electronWS.addEventListener('open', function () {
+            console.log('electron connection established');
+        });
+        electronWS.addEventListener('error', (err) => {
+            console.log('error', err);
+
+        });
+        electronWS.addEventListener('message', (message) => {
+            electronWS.send(JSON.stringify(this.messageTreatment(message)))
+        });
+        electronWS.addEventListener('close', () => {
+            console.log('electron is closing');
+
+        });
+
+        this.electronWS = electronWS;
+    }
+
+    setCallBack(method,newFunction){
+        this.callBackFunctions[method]= newFunction;
+    }
+
+    messageTreatment(message){
+        const messageObject = JSON.parse(message)
+        return {
+            id : messageObject.id,
+            type : messageObject.type+"Response",
+            message : messageObject.type ==="Queue" ? this.messageTreatment(messageObject.message) : this.callBackFunctions[messageObject.type](messageObject.message)
+        }
     }
 
 }
