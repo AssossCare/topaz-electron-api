@@ -1,5 +1,5 @@
 
-const WebSocket = require('ws');
+const WebSocket = window.navigator.appVersion.includes("ElectronTopazClient") ? window.require('ws') : require('ws')
 export class ElectronApi {
 
     constructor(host) {
@@ -279,7 +279,7 @@ export class ElectronApi {
 
         });
         electronWS.addEventListener('message', (message) => {
-            electronWS.send(JSON.stringify(this.messageTreatment(message)))
+            electronWS.send(JSON.stringify(this.messageTreatment(message.data)))
         });
         electronWS.addEventListener('close', () => {
             console.log('electron is closing');
