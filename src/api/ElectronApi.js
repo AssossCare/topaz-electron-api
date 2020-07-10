@@ -1,11 +1,10 @@
 
+const WebSocket = require('ws');
 export class ElectronApi {
 
-    WebSocket = require('ws');
-    electronWS = null
-    callBackFunctions = {}
-
     constructor(host) {
+        this.electronWS = null
+        this.callBackFunctions = {}
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
         this.available=false
@@ -267,8 +266,8 @@ export class ElectronApi {
 
     //websocket for read auto eid
     launchWS(callBackFunctions){
-        callBackFunctions.map(fct => {
-            this.setCallBack(fct.method,fct.fct)
+        Object.keys(callBackFunctions).map(key => {
+            this.setCallBack(key,callBackFunctions[key])
         })
         const electronWS = new WebSocket(`${this.host.replace(/^http/, "ws")}/topazApi`)
 
