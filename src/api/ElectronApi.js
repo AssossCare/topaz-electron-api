@@ -1,5 +1,3 @@
-
-const WebSocket = window.navigator.appVersion.includes("ElectronTopazClient") ? window.require('ws') : require('ws')
 export class ElectronApi {
 
     constructor(host) {

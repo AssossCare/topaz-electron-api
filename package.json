@@ -18,7 +18,5 @@
     "url": "https://github.com/AssossCare/topaz-electron-api/issues"
   },
   "homepage": "https://github.com/AssossCare/topaz-electron-api#readme",
-  "dependencies": {
-    "ws": "^7.3.1"
-  }
+  "dependencies": {}
 }
