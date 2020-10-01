@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 export class ElectronApi {
 
     constructor(host) {
@@ -6,6 +8,8 @@ export class ElectronApi {
         this.host = host;
         this.headers = {"Content-Type" : "application/json; charset=utf-8"};
         this.available=false
+        //temporaire
+        this.socket = {}
         this.checkAvailable();
     }
 
@@ -267,24 +271,44 @@ export class ElectronApi {
         Object.keys(callBackFunctions).map(key => {
             this.setCallBack(key,callBackFunctions[key])
         })
-        const electronWS = new WebSocket(`${this.host.replace(/^http/, "ws")}/topazApi`)
 
-        electronWS.addEventListener('open', function () {
-            console.log('electron connection established');
-        });
-        electronWS.addEventListener('error', (err) => {
-            console.log('error', err);
+        this.getVersion().then(version => {
 
-        });
-        electronWS.addEventListener('message', (message) => {
-            electronWS.send(JSON.stringify(this.messageTreatment(message.data)))
-        });
-        electronWS.addEventListener('close', () => {
-            console.log('electron is closing');
+            if(version && version.version && version.version.split(".").length>=2 && !isNaN(parseInt(version.version.split(".")[1])) && parseInt(version.version.split(".")[1])>=4){
+                const electronWS = new WebSocket(`${this.host.replace(/^http/, "ws")}/topazApi`)
 
-        });
+                electronWS.addEventListener('open', function () {
+                    console.log('electron connection established');
+                });
+                electronWS.addEventListener('error', (err) => {
+                    console.log('error', err);
 
-        this.electronWS = electronWS;
+                });
+                electronWS.addEventListener('message', (message) => {
+                    electronWS.send(JSON.stringify(this.messageTreatment(message.data)))
+                });
+                electronWS.addEventListener('close', () => {
+                    console.log('electron is closing');
+
+                });
+
+                this.electronWS = electronWS;
+            }else{
+                this.socket = io(this.host);
+
+                this.socket.on("connect", () => {
+                    console.log("connection avec le socket de electron")
+                })
+
+                this.socket.on("update-downloaded", msg => {
+                    this.callBackFunctions["update-downloaded"](msg)
+                })
+
+                this.socket.on("auto-read-card-eid", cards =>{
+                    this.callBackFunctions["auto-read-card-eid"](cards)
+                })
+            }
+        })
     }
 
     setCallBack(method,newFunction){
