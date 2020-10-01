@@ -1,6 +1,6 @@
 {
   "name": "topaz-electron-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "api for topaz electron",
   "main": "src/index.js",
   "scripts": {
