@@ -96,7 +96,7 @@ export class ElectronApi {
             .catch(e => this.handleError(e))
     }
 
-    replication(cloudKey){
+    replication(cloudKey,cluster){
         if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/replicate`, {
             method: "POST",
