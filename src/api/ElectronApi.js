@@ -137,7 +137,7 @@ export class ElectronApi {
             headers: this.headers,
             body: JSON.stringify({
                 "userId": user.id,
-                "token": user.applicationTokens.MIKRONO || user.applicationTokens.tmp || user.applicationTokens.tmpFirstLogin || user.applicationTokens.find(txt=> txt),
+                "token": user && user.applicationTokens && user.applicationTokens.length  ? user.applicationTokens.MIKRONO || user.applicationTokens.tmp || user.applicationTokens.tmpFirstLogin || user.applicationTokens.find(txt=> txt) : "",
                 "credential": credentials
             })
         })
