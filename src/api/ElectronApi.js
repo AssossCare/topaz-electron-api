@@ -137,7 +137,7 @@ export class ElectronApi {
             headers: this.headers,
             body: JSON.stringify({
                 "userId": user.id,
-                "token": user && user.applicationTokens && user.applicationTokens.length  ? user.applicationTokens.MIKRONO || user.applicationTokens.tmp || user.applicationTokens.tmpFirstLogin || user.applicationTokens.find(txt=> txt) : "",
+                "token": user && user.applicationTokens && Object.keys(user.applicationTokens).length ? user.applicationTokens.MIKRONO || user.applicationTokens.tmp || user.applicationTokens.tmpFirstLogin || user.applicationTokens[Object.keys(user.applicationTokens)[0]] : "",
                 "credential": credentials
             })
         })
@@ -237,7 +237,7 @@ export class ElectronApi {
         return fetch(`${this.host}/openWebPage`, {
             method: "POST",
             headers: this.headers,
-            body: {url : url}
+            body: JSON.stringify({url : url})
         })
             .then(response => response.json())
             .catch(e => this.handleError(e))
