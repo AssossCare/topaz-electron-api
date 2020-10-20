@@ -59,8 +59,11 @@ export class ElectronApi {
         if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/print/${printerName}`, {
             method: "POST",
+            mode: "cors", // no-cors, cors, *same-origin
+            credentials: "same-origin", // include, same-origin, *omit
             headers: {"Content-Type": "text/html; charset=utf-8"},
-            body: body
+            redirect: "follow",
+            body: body,
         })
             .catch(e => this.handleError(e))
     }
