@@ -55,6 +55,7 @@ export class ElectronApi {
             .catch(e => this.handleError(e))
     }
 
+    /*todo @julien la requete print marche masi les dl sont trop petits*/
     print(body,printerName){
         if(!this.isAvailable())return Promise.resolve(false);
         return fetch(`${this.host}/print/${printerName}`, {
