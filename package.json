@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/AssossCare/topaz-electron-api#readme",
   "dependencies": {
-    "socket.io-client": "^2.3.1"
+    "socket.io-client": "^2.5.0"
   }
 }
